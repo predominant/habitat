@@ -16,6 +16,7 @@ import "whatwg-fetch";
 import config from "./config";
 import { packageString } from "./util";
 import { AppStore } from "./AppStore";
+import { requestRoute } from "./actions/index";
 
 const urlPrefix = `${config["habitat_api_url"]}/v1` || "v1";
 
@@ -33,11 +34,17 @@ function opts() {
     return o;
 }
 
+function signOut() {
+    const store = new AppStore();
+    store.dispatch(requestRoute(["/sign-out"]));
+}
+
 export function getUnique(origin: string, nextRange: number = 0, token: string = "") {
     const url = `${urlPrefix}/depot/${origin}/pkgs?range=${nextRange}`;
 
     return new Promise((resolve, reject) => {
-        fetch(url, opts()).then(response => {
+        fetch(url, opts())
+        .then(response => {
             if (response.status >= 400) {
                 reject(new Error(response.statusText));
             }
@@ -59,7 +66,10 @@ export function getUnique(origin: string, nextRange: number = 0, token: string =
                 });
             }
         })
-        .catch(error => reject(error));
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
 
@@ -67,7 +77,8 @@ export function getLatest(origin: string, pkg: string) {
     const url = `${urlPrefix}/depot/pkgs/${origin}/${pkg}/latest`;
 
     return new Promise((resolve, reject) => {
-        fetch(url, opts()).then(response => {
+        fetch(url, opts())
+        .then(response => {
             if (response.status >= 400) {
                 reject(new Error(response.statusText));
             }
@@ -77,7 +88,10 @@ export function getLatest(origin: string, pkg: string) {
                 });
             }
         })
-        .catch(error => reject(error));
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
 
@@ -86,17 +100,20 @@ export function getLatestInChannel(origin: string, name: string, channel: string
 
     return new Promise((resolve, reject) => {
         fetch(url, opts())
-            .then(response => {
-                if (response.status >= 400) {
-                    reject(new Error(response.statusText));
-                }
-                else {
-                    response.json().then(results => {
-                        resolve(results);
-                    });
-                }
-            })
-            .catch(error => reject(error));
+        .then(response => {
+            if (response.status >= 400) {
+                reject(new Error(response.statusText));
+            }
+            else {
+                response.json().then(results => {
+                    resolve(results);
+                });
+            }
+        })
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
 
@@ -111,7 +128,8 @@ export function get(params, nextRange: number = 0) {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(url, opts()).then(response => {
+        fetch(url, opts())
+        .then(response => {
             // Fail the promise if an error happens.
             //
             // If we're hitting the fake api, the 4xx response will show up
@@ -138,7 +156,10 @@ export function get(params, nextRange: number = 0) {
                 });
             }
         })
-        .catch(error => reject(error));
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
 
@@ -146,7 +167,8 @@ export function getPackageVersions(origin: string, pkg: string) {
     const url = `${urlPrefix}/depot/pkgs/${origin}/${pkg}/versions`;
 
     return new Promise((resolve, reject) => {
-        fetch(url, opts()).then(response => {
+        fetch(url, opts())
+        .then(response => {
             if (response.status >= 400) {
                 reject(new Error(response.statusText));
             }
@@ -156,7 +178,10 @@ export function getPackageVersions(origin: string, pkg: string) {
                 });
             }
         })
-        .catch(error => reject(error));
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
 
@@ -169,14 +194,18 @@ export function submitJob(origin: string, pkg: string, token: string) {
                 "Authorization": `Bearer ${token}`,
             },
             method: "POST",
-        }).then(response => {
+        })
+        .then(response => {
             if (response.ok) {
                 resolve(true);
             } else {
                 reject(new Error(response.statusText));
             }
         })
-            .catch(error => reject(error));
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
 
@@ -185,13 +214,16 @@ export function getStats(origin: string) {
 
     return new Promise((resolve, reject) => {
         fetch(url)
-            .then(response => {
-                if (response.ok) {
-                    response.json().then(data => resolve(data));
-                } else {
-                    reject(new Error(response.statusText));
-                }
-            })
-            .catch(error => reject(error));
+        .then(response => {
+            if (response.ok) {
+                response.json().then(data => resolve(data));
+            } else {
+                reject(new Error(response.statusText));
+            }
+        })
+        .catch(error => {
+            reject(error);
+            signOut();
+        });
     });
 }
