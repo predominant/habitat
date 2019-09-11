@@ -1,0 +1,11 @@
+name: CI
+
+on: [push]
+
+jobs:
+  macos-build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: mac core/hab
+      run: .buildkite/scripts/build_mac_release.sh
