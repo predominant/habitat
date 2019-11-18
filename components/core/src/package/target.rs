@@ -313,6 +313,8 @@ package_targets! {
     /// [Linux kernel]: https://en.wikipedia.org/wiki/Linux_kernel
     /// [arm-arch]: https://en.wikipedia.org/wiki/ARM_architecture
     ("aarch64-linux", AARCH64_Linux, AARCH64_LINUX, "aarch64", "linux");
+
+    ("armhf-linux", ARMHF_Linux, ARMHF_LINUX, "armhf", "linux");
 }
 
 lazy_static::lazy_static! {

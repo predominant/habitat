@@ -354,6 +354,8 @@ fn studio_target(windows: bool, target: target::PackageTarget) -> target::Packag
         target::X86_64_WINDOWS => target::X86_64_LINUX,
         #[cfg(feature = "aarch64-linux")]
         target::AARCH64_LINUX => panic!("{} studios are not supported", target::AARCH64_LINUX),
+        #[cfg(feature = "armhf-linux")]
+        target::ARMHF_LINUX => target::X86_64_LINUX,
         // This is only needed for the case that we have no target enabled. In that case, we get a
         // non-exhaustive patterns error because the match statement is empty.
         #[cfg(not(any(feature = "supported_targets", feature = "aarch64-linux")))]

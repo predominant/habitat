@@ -66,7 +66,8 @@ winreg = "*"
 tempfile = "*"
 
 [features]
-default = ["supported_targets"]
+default = ["supported_targets", "armhf-linux"]
 functional = []
 supported_targets = ["habitat_core/supported_targets"]
 aarch64-linux = ["habitat_core/aarch64-linux"]
+armhf-linux = ["habitat_core/armhf-linux"]
