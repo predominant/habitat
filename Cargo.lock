@@ -1688,7 +1688,7 @@ dependencies = [
  "libc",
  "log 0.4.14",
  "log4rs",
- "mio 0.7.6",
+ "mio 0.7.10",
  "notify",
  "num_cpus",
  "parking_lot",
@@ -2360,9 +2360,9 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.7.6"
+version = "0.7.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f33bc887064ef1fd66020c9adfc45bb9f33d75a42096c81e7c56c65b75dd1a8b"
+checksum = "2182a122f3b7f3f5329cb1972cee089ba2459a0a80a56935e6e674f096f8d839"
 dependencies = [
  "libc",
  "log 0.4.14",
@@ -4242,7 +4242,7 @@ dependencies = [
  "bytes 1.0.1",
  "libc",
  "memchr 2.3.3",
- "mio 0.7.6",
+ "mio 0.7.10",
  "num_cpus",
  "once_cell",
  "pin-project-lite 0.2.0",
